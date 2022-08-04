@@ -45,7 +45,6 @@ struct LTGAResultC {
 struct Environment {
   char       *terminated;                                             /* Whether a specific GOMEA with the restart scheme has terminated. */
   char       *elitist_solution,                                       /* The very best solution ever evaluated. */
-            **sostr,                                                  /* Set of solutions to reach. */
            ***populations,                                            /* The populations containing the solutions. */
            ***offsprings;                                             /* Offspring solutions (one set per population). */
   short       halt_execution,                                         /* Whether the execution of the library should be halted (due to the desired value having been reached or the max number of evaluations has been exceeded) */
@@ -135,19 +134,11 @@ void installedProblemEvaluation( int index, double *parameters, double *objectiv
 void initializeNewGOMEA( struct Environment *env );
 void initializeNewGOMEAMemory( struct Environment *env );
 void initializeNewGOMEAPopulationAndFitnessValues( struct Environment *env );
-void initializeValueAndSetOfSolutionsToReach( struct Environment *env );
-short initializeValueToReach( struct Environment *env );
-short initializeSetOfSolutionsToReach( struct Environment *env );
 void initializeRandomNumberGenerator( struct Environment *env );
 
 void selectFinalSurvivorsSpecificGOMEA( struct Environment *env, int gomea_index );
 char betterFitness( double objective_value_x, double constraint_value_x, double objective_value_y, double constraint_value_y );
 char equalFitness( double objective_value_x, double constraint_value_x, double objective_value_y, double constraint_value_y );
-
-void writeGenerationalStatistics( struct Environment *env );
-void writeGenerationalSolutions( struct Environment *env, char is_final_generation );
-void writeRunningTime( struct Environment *env, char *filename );
-void writeElitistSolution( struct Environment *env );
 
 char checkTermination( struct Environment *env );
 char checkNumberOfEvaluationsTerminationCondition( struct Environment *env );
@@ -158,14 +149,10 @@ char checkFitnessVarianceTermination(struct Environment *env, int GOMEA_index );
 void generationalStepAllGOMEAs( struct Environment *env );
 void makeOffspringSpecificGOMEA( struct Environment *env, int gomea_index );
 void learnFOSSpecificGOMEA( struct Environment *env, int gomea_index );
-void selectForLearningLT(int gomea_index);
 int **learnLTFOSSpecificGOMEA( struct Environment *env, int gomea_index, short compute_dependency_matrices, short compute_parent_child_relations, int *number_of_parent_child_relations );
 int determineNearestNeighbour( int index, double **S_matrix, int *mpm_number_of_indices, int mpm_length );
-void computeDependencyMatrixSpecificGOMEA( int gomea_index );
 void computeDependencyMatrixMutualInformationSpecificGOMEA( struct Environment *env, int gomea_index );
 double *estimateParametersForSingleBinaryMarginal( struct Environment *env, int gomea_index, int *indices, int number_of_indices, int *factor_size );
-void uniquifyFOSSpecificGOMEA( int gomea_index );
-void printFOSContentsSpecificGOMEA( struct Environment *env, int gomea_index );
 double log2( double x );
 void generateAndEvaluateNewSolutionsToFillOffspringSpecificGOMEA( struct Environment *env, int gomea_index );
 char *generateAndEvaluateNewSolutionBinarySpecificGOMEA( struct Environment *env, int gomea_index, int parent_index, double *obj, double *con );
@@ -176,7 +163,6 @@ void ezilaitiniAllGOMEAs( struct Environment *env );
 void ezilaitiniSpecificGOMEA( struct Environment *env, int gomea_index );
 void ezilaitiniSpecificGOMEAMemoryForPopulationAndOffspring( struct Environment *env, int gomea_index );
 void ezilaitiniValueAndSetOfSolutionsToReach( struct Environment *env );
-void ezilaitiniProblem( int index );
 
 long getMilliSecondsRunning( struct Environment *env );
 long getMilliSecondsRunningAfterInit( struct Environment *env );

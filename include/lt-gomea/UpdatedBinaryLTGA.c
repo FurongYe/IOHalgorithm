@@ -211,31 +211,6 @@ void problemEvaluation(struct Environment *env, int index, char *parameters, dou
     }
   }
 
-  /* Check the SOSTR */
-  if( !env->vosostr_hit_status )
-  {
-    if( env->sostr_exists )
-    {
-      for( i = 0; i < env->number_of_solutions_in_sostr; i++ )
-      {
-        same = 1;
-        for( j = 0; j < env->number_of_parameters; j++ )
-        {
-          if( parameters[j] != env->sostr[i][j] )
-          {
-            same = 0;
-            break;
-          }
-        }
-        if( same )
-        {
-          env->vosostr_hit_status = 1;
-          break;
-        }
-      }
-    }
-  }
-
   /* Check the VOSOSTR */
   if( env->vosostr_hit_status == 1 )
   {
@@ -932,13 +907,6 @@ void makeOffspringSpecificGOMEA( struct Environment *env, int gomea_index )
   //Learn LT from selection
   learnFOSSpecificGOMEA( env, gomea_index );
 
-  if( env->print_FOSs_contents )
-  {
-    printf("### FOS contents for GOMEA #%02d in generation #%03d\n", gomea_index, env->number_of_generations);
-    printFOSContentsSpecificGOMEA( env, gomea_index );
-    printf( "###################################################\n" );
-  }
-
   generateAndEvaluateNewSolutionsToFillOffspringSpecificGOMEA( env, gomea_index );
 }
 
@@ -1301,24 +1269,6 @@ void computeDependencyMatrixMutualInformationSpecificGOMEA( struct Environment *
   }
 }
 
-
-void printFOSContentsSpecificGOMEA( struct Environment *env, int gomea_index )
-{
-  int i, j;
-
-  for( i = 0; i < env->FOSs_length[gomea_index]; i++ )
-  {
-    printf( "# [" );
-    for( j = 0; j < env->FOSs_number_of_indices[gomea_index][i]; j++ )
-    {
-      printf( "%d",env->FOSs[gomea_index][i][j] );
-      if( j < env->FOSs_number_of_indices[gomea_index][i]-1 )
-        printf( " " );
-    }
-    printf( "]\n" );
-  }
-  fflush( stdout );
-}
 
 /**
  * Computes the two-log of x.
@@ -1777,15 +1727,6 @@ void ezilaitiniSpecificGOMEAMemoryForPopulationAndOffspring( struct Environment 
   free( env->constraint_values_offsprings[gomea_index] );
 }
 
-void ezilaitiniValueAndSetOfSolutionsToReach(struct Environment *env)
-{
-  int i;
-
-  for( i = 0; i < env->number_of_solutions_in_sostr; i++ )
-    free( env->sostr[i] );
-  free( env->sostr );
-}
-
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
 
@@ -1843,10 +1784,6 @@ void run( struct Environment *env )
   env->timestamp_start_after_init = getCurrentTimeStampInMilliSeconds();
 
   multiPopGOMEA( env );
-
-  // writeRunningTime( env, (char *) "total_running_time.dat" );
-
-  ezilaitiniValueAndSetOfSolutionsToReach( env );
 }
 
 void multiPopGOMEA(struct Environment *env)
@@ -1872,22 +1809,10 @@ void multiPopGOMEA(struct Environment *env)
     if( env->number_of_GOMEAs < env->maximum_number_of_GOMEAs )
       initializeNewGOMEA( env );
 
-    // if( env->write_generational_statistics )
-    //   writeGenerationalStatistics( env );
-
-    // if( env->write_generational_solutions )
-    //   writeGenerationalSolutions( env, 0 );
-
     generationalStepAllGOMEAs( env );
 
     env->number_of_generations++;
   }
-
-  // if( env->write_generational_statistics )
-  //   writeGenerationalStatistics( env );
-
-  // if( env->write_generational_solutions )
-  //   writeGenerationalSolutions( env, 1 );
 
   ezilaitiniAllGOMEAs( env );
 
@@ -1922,7 +1847,6 @@ struct Environment getNewEnvironment() {
   env.terminated = 0;
 
   env.elitist_solution = 0;
-  env.sostr = 0;
   env.populations = 0;
   env.offsprings = 0;
 
