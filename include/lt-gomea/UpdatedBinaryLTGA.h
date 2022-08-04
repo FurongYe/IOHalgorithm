@@ -125,31 +125,13 @@ struct Environment {
 
 /*-=-=-=-=-=-=-=-=-=-=-=-= Section Header Functions -=-=-=-=-=-=-=-=-=-=-=-=*/
 void *Malloc( long size );
-int *mergeSortIntegersDecreasing( int *array, int array_size );
-void mergeSortIntegersDecreasingWithinBounds( int *array, int *sorted, int *tosort, int p, int q );
-void mergeSortIntegersDecreasingMerge( int *array, int *sorted, int *tosort, int p, int r, int q );
-int *mergeSortDoublesIncreasing( double *array, int array_size );
-void mergeSortDoublesIncreasingWithinBounds( double *array, int *sorted, int *tosort, int p, int q );
-void mergeSortDoublesIncreasingMerge( double *array, int *sorted, int *tosort, int p, int r, int q );
-void interpretCommandLine( int argc, char **argv );
-void parseCommandLine( int argc, char **argv );
-void parseOptions( int argc, char **argv, int *index );
-void printAllInstalledProblems();
-void printAllInstalledFOSs();
-void optionError( char **argv, int index );
-void parseParameters( int argc, char **argv, int *index );
-void printUsage();
-void checkOptions();
-void printVerboseOverview( struct Environment *env );
 double randomRealUniform01( struct Environment *env );
 int randomInt( struct Environment *env, int maximum );
 int *randomPermutation( struct Environment *env, int n );
-char *installedProblemName( int index );
-int numberOfInstalledProblems();
+
 void problemEvaluation( struct Environment *env, int index, char *parameters, double *objective_value, double *constraint_value, int number_of_touched_parameters, int *touched_parameters_indices, char *parameters_before, double objective_value_before, double constraint_value_before, int GOMEA_index );
 void installedProblemEvaluation( int index, double *parameters, double *objective_value, double *constraint_value, int number_of_touched_parameters, int *touched_parameters_indices, double *parameters_before, double objective_value_before, double constraint_value_before );
-int *randomKeysToIntegerPermutation( double *parameters );
-void sortFunctionProblemEvaluation( int *parameters_as_integer_permutation, double *objective_value, double *constraint_value );
+
 void initializeNewGOMEA( struct Environment *env );
 void initializeNewGOMEAMemory( struct Environment *env );
 void initializeNewGOMEAPopulationAndFitnessValues( struct Environment *env );
@@ -157,78 +139,57 @@ void initializeValueAndSetOfSolutionsToReach( struct Environment *env );
 short initializeValueToReach( struct Environment *env );
 short initializeSetOfSolutionsToReach( struct Environment *env );
 void initializeRandomNumberGenerator( struct Environment *env );
-// void initializeProblem( int index );
-void initializeMKLandscape();
-void initializeMkLandscapeMemory();
+
 void selectFinalSurvivorsSpecificGOMEA( struct Environment *env, int gomea_index );
 char betterFitness( double objective_value_x, double constraint_value_x, double objective_value_y, double constraint_value_y );
 char equalFitness( double objective_value_x, double constraint_value_x, double objective_value_y, double constraint_value_y );
+
 void writeGenerationalStatistics( struct Environment *env );
 void writeGenerationalSolutions( struct Environment *env, char is_final_generation );
 void writeRunningTime( struct Environment *env, char *filename );
 void writeElitistSolution( struct Environment *env );
+
 char checkTermination( struct Environment *env );
 char checkNumberOfEvaluationsTerminationCondition( struct Environment *env );
 char checkVOSOSTRTerminationCondition( struct Environment *env );
 char checkNumberOfMilliSecondsTerminationCondition( struct Environment *env );
 char checkFitnessVarianceTermination(struct Environment *env, int GOMEA_index );
+
 void generationalStepAllGOMEAs( struct Environment *env );
 void makeOffspringSpecificGOMEA( struct Environment *env, int gomea_index );
-char *installedFOSStructureName( int index );
-int numberOfInstalledFOSStructures();
 void learnFOSSpecificGOMEA( struct Environment *env, int gomea_index );
-void learnUnivariateFOSSpecificGOMEA( int gomea_index );
 void selectForLearningLT(int gomea_index);
 int **learnLTFOSSpecificGOMEA( struct Environment *env, int gomea_index, short compute_dependency_matrices, short compute_parent_child_relations, int *number_of_parent_child_relations );
 int determineNearestNeighbour( int index, double **S_matrix, int *mpm_number_of_indices, int mpm_length );
-int **learnMLNFOSSpecificGOMEA( int gomea_index, short compute_dependency_matrices, short compute_parent_child_relations, int *number_of_parent_child_relations );
-void learnLTNFOSSpecificGOMEA( int gomea_index );
-void learnLTNFOSWithOrWithoutFilteringSpecificGOMEA( int gomea_index, short use_filtering );
-void learnFilteredLTFOSSpecificGOMEA( int gomea_index, short compute_dependency_matrices );
-void learnFilteredMLNFOSSpecificGOMEA( int gomea_index, short compute_dependency_matrices );
-void learnFilteredLTNFOSSpecificGOMEA( int gomea_index );
-void filterParentChildRelationsAndCreateNewFOSSpecificGOMEA( int gomea_index, int **parent_child_relations, int number_of_parent_child_relations );
-double computeLinkageStrengthSpecificGOMEA( int gomea_index, int *variables, int number_of_variables );
 void computeDependencyMatrixSpecificGOMEA( int gomea_index );
 void computeDependencyMatrixMutualInformationSpecificGOMEA( struct Environment *env, int gomea_index );
-// double *estimateParametersForSingleBinaryMarginalSpecificGOMEA( int gomea_index, int *indices, int number_of_indices, int *factor_size );
 double *estimateParametersForSingleBinaryMarginal( struct Environment *env, int gomea_index, int *indices, int number_of_indices, int *factor_size );
 void uniquifyFOSSpecificGOMEA( int gomea_index );
-short linkageSubsetsOfSameLengthAreDuplicates( int *linkageSubset0, int *linkageSubset1, int length );
 void printFOSContentsSpecificGOMEA( struct Environment *env, int gomea_index );
 double log2( double x );
 void generateAndEvaluateNewSolutionsToFillOffspringSpecificGOMEA( struct Environment *env, int gomea_index );
 char *generateAndEvaluateNewSolutionBinarySpecificGOMEA( struct Environment *env, int gomea_index, int parent_index, double *obj, double *con );
-double *generateAndEvaluateNewSolutionSpecificGOMEA( int gomea_index, int parent_index, double *obj, double *con );
 void shuffleFOSSpecificGOMEA( struct Environment *env, int gomea_index );
 void shuffleFOSSubsetsSpecificGOMEA( struct Environment *env, int gomea_index );
+
 void ezilaitiniAllGOMEAs( struct Environment *env );
 void ezilaitiniSpecificGOMEA( struct Environment *env, int gomea_index );
 void ezilaitiniSpecificGOMEAMemoryForPopulationAndOffspring( struct Environment *env, int gomea_index );
 void ezilaitiniValueAndSetOfSolutionsToReach( struct Environment *env );
 void ezilaitiniProblem( int index );
-void ezilaitiniMkLandscape();
+
 long getMilliSecondsRunning( struct Environment *env );
 long getMilliSecondsRunningAfterInit( struct Environment *env );
 long getMilliSecondsRunningSinceTimeStamp( long timestamp );
 long getCurrentTimeStampInMilliSeconds();
+
 void run( struct Environment *env );
 void multiPopGOMEA( struct Environment *env );
 int main( int argc, char **argv );
 
-void loadTaillardFlowshop(int, int, char *, int);
-void taillardFlowshopProblemEvaluation(int *, double *, double *);
-void loadCliqueTree(char *fn); 
-void loadCodomain(char *fn);
 void calculateFitness( struct Environment *env, char *parameters, double *objective_value, double *constraint_value);
 int setParameters(struct Environment *env, struct LTGAParameters *run_parameters, uint **cliques_memory, double **codomain_memory );
 extern struct LTGAResultC run_with_parameters(struct LTGAParameters run_parameters, uint **cliques_memory, double **codomain_memory );
 struct Environment getNewEnvironment();
-
-extern uint * *const get_memory_pointer_cliques(uint m);
-extern double * *const get_memory_pointer_codomain(uint m);
-extern void free_memory_pointer_cliques(uint * *const cliques_memory);
-extern void free_memory_pointer_codomain(double * *const codomain_memory);
-extern void free_memory_pointer_elitist_solution(char * elitist_solution);
 
 #endif
