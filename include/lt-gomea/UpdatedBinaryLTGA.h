@@ -162,7 +162,6 @@ void shuffleFOSSubsetsSpecificGOMEA( struct Environment *env, int gomea_index );
 void ezilaitiniAllGOMEAs( struct Environment *env );
 void ezilaitiniSpecificGOMEA( struct Environment *env, int gomea_index );
 void ezilaitiniSpecificGOMEAMemoryForPopulationAndOffspring( struct Environment *env, int gomea_index );
-void ezilaitiniValueAndSetOfSolutionsToReach( struct Environment *env );
 
 long getMilliSecondsRunning( struct Environment *env );
 long getMilliSecondsRunningAfterInit( struct Environment *env );
