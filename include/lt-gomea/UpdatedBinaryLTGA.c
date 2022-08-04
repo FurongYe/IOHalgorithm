@@ -116,6 +116,28 @@ int randomInt(struct Environment *env, int maximum )
   return( result );
 }
 
+/**
+ * Returns a random compact (using integers 0,1,...,n-1) permutation
+ * of length n using the Fisher-Yates shuffle.
+ */
+int *randomPermutation(struct Environment *env, int n )
+{
+  int i, j, dummy, *result;
+
+  result = (int *) Malloc( n*sizeof( int ) );
+  for( i = 0; i < n; i++ )
+    result[i] = i;
+
+  for( i = n-1; i > 0; i-- )
+  {
+    j         = randomInt(env, i+1 );
+    dummy     = result[j];
+    result[j] = result[i];
+    result[i] = dummy;
+  }
+
+  return( result );
+}
 
 /**
  * Calculate the fitness using the codomain values passed as input
@@ -372,6 +394,23 @@ void initializeNewGOMEAPopulationAndFitnessValues(struct Environment *env)
   }
 }
 
+/**
+ * Initializes the pseudo-random number generator.
+ */
+void initializeRandomNumberGenerator(struct Environment *env)
+{
+  struct timeval tv;
+  struct tm *timep;
+
+  while( env->random_seed_changing == 0 )
+  {
+    gettimeofday( &tv, NULL );
+    timep = localtime (&tv.tv_sec);
+    env->random_seed_changing = timep->tm_hour * 3600 * 1000 + timep->tm_min * 60 * 1000 + timep->tm_sec * 1000 + tv.tv_usec / 1000;
+  }
+
+  env->random_seed = env->random_seed_changing;
+}
 
 /*=-=-=-=-=-=-=-=-=-=-= Section Survivor Selection =-=-=-=-=-=-=-=-=-=-=-=-=*/
 /**
@@ -1801,9 +1840,6 @@ void run( struct Environment *env )
 
   initializeRandomNumberGenerator( env );
 
-  if( env->print_verbose_overview )
-    printVerboseOverview( env );
-
   env->timestamp_start_after_init = getCurrentTimeStampInMilliSeconds();
 
   multiPopGOMEA( env );
@@ -1872,14 +1908,12 @@ void multiPopGOMEA(struct Environment *env)
  * - interpret parameters on the command line
  * - run the algorithm with the interpreted parameters
  */
-// int main( int argc, char **argv )
-// {
-//   interpretCommandLine( argc, argv );
+int main( int argc, char **argv )
+{
+  // run();
 
-//   run();
-
-//   return( 0 );
-// }
+  return( 0 );
+}
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 
 struct Environment getNewEnvironment() {
